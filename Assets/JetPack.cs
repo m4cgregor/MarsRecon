@@ -7,6 +7,14 @@ public class JetPack : MonoBehaviour {
 
 	public Rigidbody jetRidigBody;
 
+	// Particles
+	public ParticleSystem ParticlesLeft;
+	ParticleSystem.EmissionModule PLE;
+	public ParticleSystem ParticlesRight;
+	ParticleSystem.EmissionModule PRE;
+	float defaultRate = 0f;
+
+
 	// Audio
 	public AudioMixerSnapshot audioRocketOff;
 	public AudioMixerSnapshot audioRocketOn;
@@ -38,9 +46,9 @@ public class JetPack : MonoBehaviour {
 
 	void Start () {
 
-	//	rocketAudio.loop = true;
-
-
+		PLE = ParticlesLeft.emission;
+		PRE = ParticlesRight.emission;
+		defaultRate = PLE.rate.constantMax;
 	}
 	
 	// Update is called once per frame
@@ -86,6 +94,21 @@ public class JetPack : MonoBehaviour {
 
 			float volume = (Mathf.Abs (rocketPower) + Mathf.Abs (jetFSpeed) + Mathf.Abs (jetSideSpeed) + Mathf.Abs (jetTurn))/16;
 
+			if (volume > 0) {
+				if (PLE.rate.constantMax != defaultRate) {
+					ParticleSystem.MinMaxCurve rate = PLE.rate;
+					rate.constantMax = defaultRate;
+					PLE.rate = rate;
+					PRE.rate = rate;
+				}
+			} else {
+				if (PLE.rate.constantMax != 0) {
+					ParticleSystem.MinMaxCurve rate = PLE.rate;
+					rate.constantMax = 0;
+					PLE.rate = rate;
+					PRE.rate = rate;
+				}
+			}
 			foreach (AudioSource src in GetComponentsInChildren<AudioSource>()) {
 				if (src.gameObject == gameObject)
 					continue;
