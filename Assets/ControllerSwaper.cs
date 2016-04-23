@@ -10,14 +10,33 @@ public class ControllerSwaper : MonoBehaviour {
 	JetPack airController;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		body = GetComponent<Rigidbody> ();
 		groundController = GetComponent<FirstPersonController> ();
 		characterController = GetComponent<CharacterController> ();
 		airController = GetComponent<JetPack> ();
 	}
 
+	void OnDisable() {
+		body.isKinematic = false;
+		body.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+		characterController.enabled = false;
+		airController.enabled = false;
+		groundController.enabled = false;
+	}
+
+	void OnEnable() {
+		body.isKinematic = true;
+		body.constraints = 0;
+		airController.enabled = false;
+		groundController.enabled = true;
+		characterController.enabled = true;
+		characterController.Move (new Vector3(0, -1, 0));
+	}
+
 	void OnTriggerEnter(Collider col) {
+		if (!enabled)
+			return;
 		if (col.tag == "Terrain") {
 			body.isKinematic = true;
 			body.constraints = 0;
@@ -25,7 +44,6 @@ public class ControllerSwaper : MonoBehaviour {
 			groundController.enabled = true;
 			characterController.enabled = true;
 			characterController.Move (new Vector3(0, -1, 0));
-			//characterController.Move (new Vector3(0, 0.01f, 0));
 		}
 	}
 

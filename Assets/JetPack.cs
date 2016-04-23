@@ -22,6 +22,7 @@ public class JetPack : MonoBehaviour {
 	// Fuel
 	public float fuel = 100f;
 	public float fuelCost = 1f;
+	public Slider fuelSlider;
 
 	// Jet Up
 	private float rocketPower;
@@ -38,17 +39,16 @@ public class JetPack : MonoBehaviour {
 	private float jetTurn;
 	public float jetTurnScale;
 
-	// Jet Speed Scale
-	public float jetFSpeedScale;
-
-	// Text
-	public Text fuelText;
-
 	void Start () {
-
+		UnityEngine.VR.InputTracking.Recenter ();
+		//UnityEngine.VR.VRSettings
 		PLE = ParticlesLeft.emission;
 		PRE = ParticlesRight.emission;
 		defaultRate = PLE.rate.constantMax;
+		ParticleSystem.MinMaxCurve rate = PLE.rate;
+		rate.constantMax = 0;
+		PLE.rate = rate;
+		PRE.rate = rate;
 	}
 	
 	// Update is called once per frame
@@ -75,45 +75,44 @@ public class JetPack : MonoBehaviour {
 
 		jetTurn = Input.GetAxis ("RightH");
 
-		fuelText.text = ("Fuel:"+fuel.ToString());
-
 		if (fuel > 0) {
-			
 			// UP
 			jetRidigBody.AddForce (transform.up * rocketPower * rocketPowerScale);
-			fuel -= fuelCost * Mathf.Round (Mathf.Abs (rocketPower));
+			fuel -= fuelCost * Mathf.Abs (rocketPower) * (rocketPowerScale/2000);
 			// FWD
-			jetRidigBody.AddRelativeForce (Vector3.forward * jetFSpeed * jetFSpeedScale);
-			fuel -= fuelCost * Mathf.Round (Mathf.Abs (jetFSpeed));
+			jetRidigBody.AddRelativeForce (Vector3.forward * jetFSpeed * rocketPowerScale / 2);
+			fuel -= fuelCost * Mathf.Abs (jetFSpeed) * (rocketPowerScale/2000);
 			// Side
-			jetRidigBody.AddRelativeForce (Vector3.right * jetSideSpeed * jetFSpeedScale);
-			fuel -= fuelCost * Mathf.Round (Mathf.Abs (jetSideSpeed));
+			jetRidigBody.AddRelativeForce (Vector3.right * jetSideSpeed * rocketPowerScale / 2);
+			fuel -= fuelCost * Mathf.Abs (jetSideSpeed) * (rocketPowerScale/2000);
 			// Turn
 			jetRidigBody.AddRelativeTorque (Vector3.up * jetTurn * jetTurnScale);
-			fuel -= fuelCost * Mathf.Round (Mathf.Abs (jetTurn));
+			fuel -= fuelCost * Mathf.Abs (jetTurn) * (rocketPowerScale/2000);
+			fuelSlider.value = fuel;
+			Debug.Log (fuel.ToString ());
+		}
 
-			float volume = (Mathf.Abs (rocketPower) + Mathf.Abs (jetFSpeed) + Mathf.Abs (jetSideSpeed) + Mathf.Abs (jetTurn))/16;
+		float volume = (Mathf.Abs (rocketPower) + Mathf.Abs (jetFSpeed) + Mathf.Abs (jetSideSpeed) + Mathf.Abs (jetTurn))/16;
 
-			if (volume > 0) {
-				if (PLE.rate.constantMax != defaultRate) {
-					ParticleSystem.MinMaxCurve rate = PLE.rate;
-					rate.constantMax = defaultRate;
-					PLE.rate = rate;
-					PRE.rate = rate;
-				}
-			} else {
-				if (PLE.rate.constantMax != 0) {
-					ParticleSystem.MinMaxCurve rate = PLE.rate;
-					rate.constantMax = 0;
-					PLE.rate = rate;
-					PRE.rate = rate;
-				}
+		if (volume > 0) {
+			if (PLE.rate.constantMax != defaultRate) {
+				ParticleSystem.MinMaxCurve rate = PLE.rate;
+				rate.constantMax = defaultRate;
+				PLE.rate = rate;
+				PRE.rate = rate;
 			}
-			foreach (AudioSource src in GetComponentsInChildren<AudioSource>()) {
-				if (src.gameObject == gameObject)
-					continue;
-				src.volume = volume;
+		} else {
+			if (PLE.rate.constantMax != 0) {
+				ParticleSystem.MinMaxCurve rate = PLE.rate;
+				rate.constantMax = 0;
+				PLE.rate = rate;
+				PRE.rate = rate;
 			}
+		}
+		foreach (AudioSource src in GetComponentsInChildren<AudioSource>()) {
+			if (src.gameObject == gameObject)
+				continue;
+			src.volume = volume;
 		}
 	}
 }

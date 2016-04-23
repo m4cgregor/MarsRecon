@@ -18,8 +18,8 @@ public class ConfigurationSlider : MonoBehaviour {
     public Text value;
 
     static float weight = 80f;
-    static float force = 500f;
-    static float fuel = 1000f;
+    static float force = 750f;
+    static float fuel = 20f;
 
     private Slider slider;
     string sufix = " Kg";
@@ -29,25 +29,45 @@ public class ConfigurationSlider : MonoBehaviour {
         if (property == Property.MAX_FORCE)
             sufix = " N";
         else if (property == Property.FUEL_AMOUNT)
-            sufix = " L";
+			sufix = " L";
+		/*float val = GetComponent<Slider> ().value;
+		if (property == Property.MAX_FORCE)
+			val *= 10;
+		value.text = (val.ToString () + sufix);
+		*/
+		Slider slider = GetComponent<Slider> ();
+		switch (property)
+		{
+		case Property.YOUR_WEIGHT:
+			slider.value = weight;
+			break;
+		case Property.MAX_FORCE:
+			slider.value = force/10;
+			break;
+		case Property.FUEL_AMOUNT:
+			slider.value = fuel;
+			break;
+		}
     }
 
 	public void UpdateLabel(float val) {
-        value.text = (val.ToString() + sufix).Trim();
+		val = GetComponent<Slider> ().value;
+		if (property == Property.MAX_FORCE)
+			val *= 10;
+		value.text = (val.ToString () + sufix);
         
-
-        switch (property)
-        {
-            case Property.YOUR_WEIGHT:
-                weight = val;
-                break;
-            case Property.MAX_FORCE:
-                force = val;
-                break;
-            case Property.FUEL_AMOUNT:
-                fuel = val;
-                break;
-        }
+		switch (property)
+		{
+		case Property.YOUR_WEIGHT:
+			weight = val;
+			break;
+		case Property.MAX_FORCE:
+			force = val;
+			break;
+		case Property.FUEL_AMOUNT:
+			fuel = val;
+			break;
+		}
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         Rigidbody body = player.GetComponent<Rigidbody>();
