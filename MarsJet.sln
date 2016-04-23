@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{26B27B3E-5D39-E52F-4921-71878AD36A9A}") = "MarsJet", "Assembly-CSharp-firstpass.csproj", "{92142392-BEF8-8C82-E889-CF46F23CA51E}"
+EndProject
+Project("{26B27B3E-5D39-E52F-4921-71878AD36A9A}") = "MarsJet", "Assembly-CSharp.csproj", "{4118A50D-22BD-0BA9-06FA-7804404D3B3D}"
+EndProject
+Project("{26B27B3E-5D39-E52F-4921-71878AD36A9A}") = "MarsJet", "Assembly-CSharp-Editor.csproj", "{586C1B3C-323F-A91A-E09C-656C88872F53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92142392-BEF8-8C82-E889-CF46F23CA51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92142392-BEF8-8C82-E889-CF46F23CA51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92142392-BEF8-8C82-E889-CF46F23CA51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92142392-BEF8-8C82-E889-CF46F23CA51E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4118A50D-22BD-0BA9-06FA-7804404D3B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4118A50D-22BD-0BA9-06FA-7804404D3B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4118A50D-22BD-0BA9-06FA-7804404D3B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4118A50D-22BD-0BA9-06FA-7804404D3B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{586C1B3C-323F-A91A-E09C-656C88872F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{586C1B3C-323F-A91A-E09C-656C88872F53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{586C1B3C-323F-A91A-E09C-656C88872F53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{586C1B3C-323F-A91A-E09C-656C88872F53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
